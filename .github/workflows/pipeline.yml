@@ -16,7 +16,7 @@ jobs:
     steps:
       #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
       - name: Code checkout
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
       #Set up JDK 17
       - name: Set up JDK
         uses: actions/setup-java@v3
