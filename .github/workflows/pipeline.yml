@@ -46,7 +46,7 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Publish jar-filename for available in other jobs
         id: publishedJarName
-        run: find target/*.jar -type -f -execdir echo 'jar-file={}' >> $GITHUB_OUTPUT ';'
+        run: find target/*.jar -type f -execdir echo 'jar-file={}' >> $GITHUB_OUTPUT ';'
       #Upload artifacts, canbe downloaded manually from Github repo
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
