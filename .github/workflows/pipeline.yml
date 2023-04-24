@@ -32,7 +32,7 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     outputs:
-      jar-file: ${{ stpes.publishedJarName.outputs.jar-file }}
+      jar-file: ${{ steps.publishedJarName.outputs.jar-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
