@@ -31,6 +31,8 @@ jobs:
   build:
     needs: tests
     runs-on: ubuntu-latest
+    outputs:
+      jar-file: ${{ stpes.publishedJarName.outputs.jar-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -42,7 +44,10 @@ jobs:
           cache: 'maven'
       - name: Run Build
         run: mvn -B package --file pom.xml
-      #Upload artifacts
+      - name: Publish jar-filename for available in other jobs
+        id: publishedJarName
+        run: find target/*.jar -type -f -execdir echo 'jar-file={}' >> $GITHUB_OUTPUT ';'
+      #Upload artifacts, canbe downloaded manually from Github repo
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -60,5 +65,7 @@ jobs:
           name: dist-files
       - name: Output contents
         run: ls
+      - name: Output jar filename
+        run: echo "${{ needs.build.outputs.jar-file }}"
       - name: Deploy
         run: echo "Deploying..."
