@@ -27,7 +27,19 @@ jobs:
       #Run Tests
       - name: Run Tests
         run: mvn -B test
-      #Run Build
+  #Run Build
+  build:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
       - name: Run Build
         run: mvn -B package --file pom.xml
       #Upload artifacts
@@ -37,3 +49,16 @@ jobs:
           name: dist-files
           path: |
             target/*.jar
+  #Deploy Job
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      -name: Output contents
+        run: ls
+      - name: Deploy
+        run: echo "Deploying..."
